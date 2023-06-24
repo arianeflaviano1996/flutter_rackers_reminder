@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MaterialApp(
+    localizationsDelegates: [
+      GlobalWidgetsLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+    ],
+    supportedLocales: [Locale("pt", "BR")],
+    debugShowCheckedModeBanner: false,
+    home: MyApp(),
+  ));
 
 class MyApp extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -106,27 +118,48 @@ class MyApp extends StatelessWidget {
                         borderRadius: BorderRadius.circular(6.0),
                       ),
                       child: TextField(
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 10.0,
-                            vertical: 8.0,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
                           ),
-                        ),
-                      ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                              vertical: 8.0,
+                            ),
+                          ),
+                         ),
                     ),
                   ),
+                  Container(
+                    child:IconButton(
+              icon: Icon(Icons.date_range),
+              onPressed: () async {
+                final data = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2023),
+                  lastDate: DateTime(2100),
+                  locale: Localizations.localeOf(context),
+                );
+
+                if (data != null) {
+                  final datapt = DateFormat(DateFormat.YEAR_MONTH_DAY, 'pt_Br')
+                      .format(data);
+
+                  print(datapt);
+                }
+              },
+            ),
+   )
                 ],
               ),
               SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(right:6 ),
+                  padding: const EdgeInsets.only(right: 6),
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
@@ -147,7 +180,9 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ],
+            
           ),
+          
         ),
       ),
     );

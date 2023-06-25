@@ -209,7 +209,6 @@ class _MyAppState extends State<MyApp> {
                         _controller.nameController.clear();
                         _controller.dateController.clear();
                       } catch (error) {
-                        
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {

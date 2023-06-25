@@ -11,11 +11,21 @@ class ReminderController {
   void createReminder() {
     final String reminder = nameController.text;
     final String date = dateController.text;
+    DateTime currentDate = DateTime.now();
+    DateTime firstHourOfToday = DateTime(
+      currentDate.year,
+      currentDate.month,
+      currentDate.day,
+      0, // Hora
+      0, // Minuto
+      0, // Segundo
+      0, // Milissegundo
+    );
 
     if (reminder.isEmpty || date.isEmpty) {
       throw ErrorHint('Name or date are missing! please fill the fields');
     }
-    if (selectDate.isBefore(DateTime.now())) {
+    if (selectDate.isBefore(firstHourOfToday)) {
       throw ErrorHint('Select the date from today on ');
     }
 
@@ -30,6 +40,8 @@ class ReminderController {
       reminderListController
           .add(DayReminders(date: selectDate, name: [reminder]));
     }
+
+    reminderListController.sort((a, b) => a.date.compareTo(b.date));
   }
 
   bool DeleteReminder(String reminder, DateTime date) {

@@ -5,12 +5,12 @@ class Reminder {
   Reminder({required this.name, required this.date});
 }
 
+class DayReminders {
+  List<String> name;
+  DateTime date;
 
-// remnder2 {
-//   date Datetime;
-//   Array<string> reminders 
-// }
-
+  DayReminders({required this.date, required this.name});
+}
 // List reminder2 
 
 // [

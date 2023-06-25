@@ -8,14 +8,14 @@
             "name": "flutter_reminder",
             "request": "launch",
             "type": "dart",
-            "program": "lib/Screens/main.dart"
+            "program": "lib/screens/main.dart"
         },
         {
             "name": "flutter_reminder (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "lib/Screens/main.dart"
+            "program": "lib/screens/main.dart"
             
         },
         {
@@ -23,7 +23,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "program": "lib/Screens/main.dart"
+            "program": "lib/screens/main.dart"
         }
     ]
 }

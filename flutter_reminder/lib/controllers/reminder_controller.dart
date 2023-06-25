@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reminder/componetes/reminder.dart';
+import 'package:flutter_reminder/model/reminder.dart';
 import 'package:intl/intl.dart';
 
 class ReminderController {
@@ -13,8 +13,10 @@ class ReminderController {
     final String date = dateController.text;
 
     if (reminder.isEmpty || date.isEmpty) {
-      //TODO add toast
-      return;
+      throw ErrorHint('Name or date are missing! please fill the fields');
+    }
+    if (selectDate.isBefore(DateTime.now())) {
+      throw ErrorHint('Select the date from today on ');
     }
 
     if (containsDate(selectDate)) {
@@ -28,14 +30,10 @@ class ReminderController {
       reminderListController
           .add(DayReminders(date: selectDate, name: [reminder]));
     }
-
-    print('Nome: $reminder');
-    print('Data: $date');
   }
 
   bool DeleteReminder(String reminder, DateTime date) {
-    int index =
-        reminderListController.indexWhere((item) => item.date == date);
+    int index = reminderListController.indexWhere((item) => item.date == date);
     bool deleted = reminderListController[index].name.remove(reminder);
     if (reminderListController[index].name.isEmpty) {
       reminderListController.removeAt(index);

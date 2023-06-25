@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reminder/componetes/reminder.dart';
+import 'package:flutter_reminder/model/reminder.dart';
 
 class RemindersPage extends StatefulWidget {
   @override

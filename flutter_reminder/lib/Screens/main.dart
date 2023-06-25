@@ -91,6 +91,7 @@ class _MyAppState extends State<MyApp> {
                         fontSize: 16,
                       ),
                       decoration: InputDecoration(
+                        hintText: 'choose the name for your reminder',
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 10.0,
@@ -125,32 +126,8 @@ class _MyAppState extends State<MyApp> {
                 ),
                 SizedBox(width: 10),
                 Expanded(
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 154, 214, 236),
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
-                    child: TextField(
-                      controller: _controller.dateController,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                          vertical: 8.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  child: IconButton(
-                    icon: Icon(Icons.date_range),
-                    onPressed: () async {
+                  child: InkWell(
+                    onTap: () async {
                       final data = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
@@ -166,6 +143,55 @@ class _MyAppState extends State<MyApp> {
                         _controller.selectDate = data;
                       }
                     },
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 154, 214, 236),
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              enabled: false,
+                              controller: _controller.dateController,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.0,
+                                  vertical: 8.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.date_range),
+                            color: Colors.white,
+                            onPressed: () async {
+                              final data = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2023),
+                                lastDate: DateTime(2100),
+                                locale: Localizations.localeOf(context),
+                              );
+
+                              if (data != null) {
+                                final datapt =
+                                    DateFormat.yMd('pt_BR').format(data);
+
+                                _controller.dateController.text = datapt;
+                                _controller.selectDate = data;
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -178,9 +204,32 @@ class _MyAppState extends State<MyApp> {
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      _controller.createReminder();
-                      _controller.nameController.clear();
-                      _controller.dateController.clear();
+                      try {
+                        _controller.createReminder();
+                        _controller.nameController.clear();
+                        _controller.dateController.clear();
+                      } catch (error) {
+                        
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Erro'),
+                              content: Text(
+                                error.toString()
+                                  ),
+                              actions: [
+                                TextButton(
+                                  child: Text('OK'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     });
                   },
                   style: ElevatedButton.styleFrom(
